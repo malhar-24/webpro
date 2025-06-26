@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+
+<!-- Head -->
+<head>
+  <!-- Page Meta Tags-->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Custom Google Fonts-->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Roboto:wght@300;400;700&display=auto"
+    rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="../static/assets/images/logos/weblogo.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../static/assets/images/logos/weblogo.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="../static/assets/images/logos/weblogo.jpeg">
+  <link rel="mask-icon" href="../static/assets/images//logos/weblogo.jpeg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Vendor CSS -->
+  <link rel="stylesheet" href="../static/assets/css/libs.bundle.css" />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="../static/assets/css/theme.bundle.css" />
+
+  <!-- Fix for custom scrollbar if JS is disabled-->
+  <noscript>
+    <style>
+      /**
+          * Reinstate scrolling for non-JS clients
+          */
+      .simplebar-content-wrapper {
+        overflow: auto;
+      }
+    </style>
+  </noscript>
+
+  <!-- Page Title -->
+  <title>OldSkool | Bootstrap 5 HTML Template</title>
+<style>#loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff; /* or any background */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loader {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ccc;
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
+  <!-- Page Title -->
+  <title>OldSkool | Bootstrap 5 HTML Template</title>
+
+</head>
+<body class="">
+<div id="loader-wrapper">
+  <div id="loader"></div>
+</div>
+<script>
+    window.addEventListener('load', function () {
+  const loader = document.getElementById('loader-wrapper');
+  loader.style.transition = 'opacity 0.5s ease';
+  loader.style.opacity = '0';
+  setTimeout(() => loader.style.display = 'none', 500);
+});
+
+</script>
+
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white flex-column border-0 ">
+    <div class="container-fluid">
+        <div class="w-100">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <a class="navbar-brand fw-bold fs-3 m-0 p-0 flex-shrink-0 order-0" href="{% url 'home' %}">
+                    <div class="d-flex align-items-center">
+                        <img class="f-w-15" src="../static/assets/images/logos/weblogo.jpeg" alt="Logo" style="width: 60px;">
+                    </div>
+                </a>
+                <ul class="list-unstyled mb-0 d-flex align-items-center order-1 order-lg-2 nav-sidelinks">
+
+                    <li class="d-lg-none">
+                        <span class="nav-link text-body d-flex align-items-center cursor-pointer" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <i class="ri-menu-line ri-lg me-1"></i> Menu
+                        </span>
+                    </li>
+                    <li class="d-lg-none ms-2">
+                           <span class="nav-link text-body search-trigger cursor-pointer"><i class="ri-search-line ri-lg"></i></span>
+                    </li>
+                    <li class="d-none d-sm-block">
+                        <span class="nav-link text-body search-trigger cursor-pointer">Search</span>
+
+                        <div class="navbar-search d-none">
+                            <div class="input-group mb-3 h-100">
+                                <span class="input-group-text px-4 bg-transparent border-0"><i
+                                            class="ri-search-line ri-lg"></i></span>
+                                <input type="text" class="form-control text-body bg-transparent border-0"
+                                    placeholder="Enter your search terms...">
+                                <span
+                                    class="input-group-text px-4 cursor-pointer disable-child-pointer close-search bg-transparent border-0"><i
+                                            class="ri-close-circle-line ri-lg"></i></span>
+                            </div>
+                        </div>
+                        <div class="search-overlay"></div>
+                    </li>                    <li class="ms-1 d-none d-lg-inline-block"> {# This makes it visible only on PC view #}
+                        {% if request.session.customer_id %}
+                            <a class="nav-link text-body" href="{% url 'logout_view' %}">
+                                Logout
+                            </a>
+                        {% else %}
+                            <a class="nav-link text-body" href="{% url 'login_register' %}">
+                                Login
+                            </a>
+                        {% endif %}
+                    </li>
+
+                    <li class="ms-1 d-inline-block position-relative dropdown-cart">
+                        <button class="nav-link me-0 disable-child-pointer border-0 p-0 bg-transparent text-body"
+                            type="button">
+                            Bag ({{total_items}})
+                        </button>
+                        <div class="cart-dropdown dropdown-menu">
+
+                            <div class="d-flex justify-content-between align-items-center border-bottom pt-3 pb-4">
+                                <h6 class="fw-bolder m-0">Cart Summary ({{total_items}} items)</h6>
+                                <i class="ri-close-circle-line text-muted ri-lg cursor-pointer btn-close-cart"></i>
+                            </div>
+                            <div>
+                                {% for item in cart_items %}
+                                <div class="row mx-0 py-4 g-0 border-bottom">
+                                    <div class="col-2 position-relative">
+                                        <a href="{% url 'product_details' %}?productid={{ item.product.product_id }}">
+                                            <picture class="d-block">
+                                                <img class="img-fluid" src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}">
+                                            </picture>
+                                        </a>
+                                    </div>
+                                    <div class="col-9 offset-1">
+                                        <div>
+                                            <h6 class="justify-content-between d-flex align-items-start mb-2">
+                                                {{ item.product.name }}
+                                                <form method="POST" action="{% url 'remove_from_cart' %}" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="product_id" value="{{ item.product.product_id }}">
+                                                    <button type="submit" style="border: none; background: none;">
+                                                        <i class="ri-close-line ms-3 text-danger"></i>
+                                                    </button>
+                                                </form>
+                                            </h6>
+                                            <span class="d-block text-muted fw-bolder text-uppercase fs-9">Qty: {{ item.quantity }}</span>
+                                        </div>
+                                        <p class="fw-bolder text-end text-muted m-0">₹{{ item.product.price|floatformat:2 }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div>
+                                <div class="pt-3">
+                                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-start mb-4 mb-md-2">
+                                        <div>
+                                            <p class="m-0 fw-bold fs-5">Grand Total</p>
+                                            <span class="text-muted small"></span>
+                                        </div>
+                                        <p class="m-0 fs-5 fw-bold">₹{{total_price}}</p>
+                                    </div>
+                                </div>
+                                <a href="{% url 'cart' %}" class="btn btn-outline-dark w-100 text-center mt-4" role="button">View Cart</a>
+                                <a href="{% url 'cart' %}" class="btn btn-dark w-100 text-center mt-2" role="button">Proceed To Checkout</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="flex-shrink-0 collapse navbar-collapse navbar-collapse-light w-auto flex-grow-1 order-2 order-lg-1"
+                    id="navbarNavDropdown">
+
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}" role="button">
+                                Home
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'product' %}" role="button">
+                                Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'order' %}" role="button">
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'cart' %}" role="button">
+                                Cart
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}" role="button">
+                                Contact
+                            </a>
+                        </li>
+                        <li class="nav-item d-lg-none"> {# This ensures it only appears in the collapsed menu for mobile #}
+                            {% if request.session.customer_id %}
+                                <a class="nav-link" href="{% url 'logout_view' %}">
+                                    Logout
+                                </a>
+                            {% else %}
+                                <a class="nav-link" href="{% url 'login_register' %}">
+                                    Login
+                                </a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <!-- Navbar -->
+    
+
+    <!-- Main Section-->
+    <section class="mt-0 ">
+        <!-- Page Content Goes Here -->            
+        
+        <!-- Breadcrumbs-->
+        
+        <!-- / Breadcrumbs-->
+
+        <div class="container-fluid mt-5">
+
+            <!-- Product Top Section-->
+            <div class="row g-6" data-sticky-container>
+
+                <!-- Product Images-->
+<div class="col-12 col-md-6 col-xl-7">
+  <div style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+    {% for img in product_images %}
+      <div style="flex: 0 0 100%; scroll-snap-align: start; text-align: center;">
+        <picture>
+          <img class="img-fluid" style="max-width: 100%; height: auto;" data-zoomable src="{{ img.image.url }}" alt="{{ product.name }}">
+        </picture>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+                <!-- /Product Images-->
+    
+                <!-- Product Information-->
+                <div class="col-12 col-md-6 col-lg-5">
+                    <div class="sticky-top top-5">
+                        <div class="pb-3" data-aos="fade-in">
+                            <div class="d-flex align-items-center mb-3">
+                                <p class="small fw-bolder text-uppercase tracking-wider text-muted m-0 me-4">{{product.brand}}</p>
+                                <div class="d-flex justify-content-start align-items-center disable-child-pointer cursor-pointer"
+                                data-pixr-scrollto
+                                data-target=".reviews">
+                                <!-- Review Stars Small-->
+                                 
+                                <div class="rating position-relative d-table">
+                                                                        <div class="position-absolute stars">
+                                        {% for _ in rating_counts.ars %}
+                                            <i class="ri-star-fill text-dark ri-2x mr-1"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="stars">
+                                        {% for _ in "12345" %}
+                                            <i class="ri-star-fill ri-2x mr-1 text-muted opacity-25"></i>
+                                        {% endfor %}
+                                    </div>
+                                </div>        <small class="text-muted d-inline-block ms-2 fs-bolder">({{total_reviews}} reviews)</small>
+                            </div>
+                            </div>
+                            
+                            <h1 class="mb-1 fs-2 fw-bold">{{ product.name }}</h1>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="fs-4 m-0 c" ><span class="fake-price-strikethrough">
+                                    <span style="text-decoration: line-through; color: #6c757d; font-weight: 400; margin-right: 5px;">
+                                        {{ product.fake_price }}RS
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="fs-4 m-0">{{ product.price }} Rs</p>
+                            </div>
+
+                            <form method="POST" action="{% url 'add_to_cart' %}">
+    {% csrf_token %}
+    <input type="hidden" name="product_id" value="{{ product.product_id }}">
+    <input type="hidden" name="quantity" value="1">
+    
+    <!-- This input will be overridden by the button clicked -->
+    <input type="hidden" name="redirect_url" id="redirect_url_input" value="{{ request.get_full_path }}">
+
+    <!-- Buy Now: set redirect to cart -->
+    <button type="submit" onclick="document.getElementById('redirect_url_input').value = {% url 'cart' %}" class="btn btn-dark w-100 text-center mt-2">
+        BUY NOW
+    </button>
+
+    <!-- Add to Cart: stays on same page -->
+    <button type="submit" class="btn btn-outline-dark w-100 text-center mt-4">
+        Add To Cart
+    </button>
+</form>
+
+
+                        
+                            <!-- Product Highlights-->
+                                <div class="my-5">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4">
+                                            <div class="text-center px-2">
+                                                <i class="ri-24-hours-line ri-2x"></i>
+                                                <small class="d-block mt-1">Next-day Delivery</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="text-center px-2">
+                                                <i class="ri-secure-payment-line ri-2x"></i>
+                                                <small class="d-block mt-1">Secure Checkout</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4">
+                                            <div class="text-center px-2">
+                                                <i class="ri-service-line ri-2x"></i>
+                                                <small class="d-block mt-1">Free Returns</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- / Product Highlights-->
+                        
+                            <!-- Product Accordion -->
+                            <div class="accordion" id="accordionProduct">
+                                <div class="accordion-item">
+                                  <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                      Product Details
+                                    </button>
+                                  </h2>
+                                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionProduct">
+                                    <div class="accordion-body">
+                                        <p class="m-0">{{product.desc}}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Details & Care
+                                      </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionProduct">
+                                      <div class="accordion-body">
+                                          <ul class="list-group list-group-flush">
+                                              <li class="list-group-item d-flex border-0 row g-0 px-0">
+                                                  <span class="col-4 fw-bolder">Composition</span>
+                                                  <span class="col-7 offset-1">{{product.composition}}</span>
+                                              </li>
+                                              <li class="list-group-item d-flex border-0 row g-0 px-0">
+                                                  <span class="col-4 fw-bolder">Care</span>
+                                                  <span class="col-7 offset-1">{{product.care}}</span>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                    </div>
+                                  </div>        
+                                <div class="accordion-item">
+                                  <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                      Delivery & Returns
+                                    </button>
+                                  </h2>
+                                  <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionProduct">
+                                    <div class="accordion-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item d-flex border-0 row g-0 px-0">
+                                                <span class="col-4 fw-bolder">Delivery</span>
+                                                <span class="col-7 offset-1">Standard delivery free for orders over $99. Next day delivery $9.99</span>
+                                            </li>
+                                            <li class="list-group-item d-flex border-0 row g-0 px-0">
+                                                <span class="col-4 fw-bolder">Returns</span>
+                                                <span class="col-7 offset-1">30 day return period. See our <a class="text-link-border" href="#">terms & conditions.</a></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            <!-- / Product Accordion-->
+                        </div>                    </div>
+                </div>
+                <!-- / Product Information-->
+            </div>
+            <!-- / Product Top Section-->
+
+            <div class="row g-0">
+
+                <!-- Related Products-->
+                <div class="col-12" data-aos="fade-up">
+                    <h3 class="fs-4 fw-bolder mt-7 mb-4">You May Also Like</h3>
+                    <!-- Swiper Latest -->
+                    <div class="swiper-container" data-swiper data-options='{
+                        "spaceBetween": 10,
+                        "loop": true,
+                        "autoplay": {
+                          "delay": 5000,
+                          "disableOnInteraction": false
+                        },
+                        "navigation": {
+                          "nextEl": ".swiper-next",
+                          "prevEl": ".swiper-prev"
+                        },   
+                        "breakpoints": {
+                          "600": {
+                            "slidesPerView": 2
+                          },
+                          "1024": {
+                            "slidesPerView": 3
+                          },       
+                          "1400": {
+                            "slidesPerView": 4
+                          }
+                        }
+                      }'>
+                      <div class="swiper-wrapper">
+  {% for p in related_products %}
+    <div class="swiper-slide">
+      <div class="card border border-transparent position-relative overflow-hidden h-100 transparent">
+        <div class="card-img position-relative" style="height: 250px;"> <!-- Fixed height -->
+          <div class="card-badges">
+            {% if p.fake_price > p.price %}
+              <span class="badge badge-card"><span class="f-w-2 f-h-2 bg-danger rounded-circle d-block me-1"></span> Sale</span>
+            {% endif %}
+          </div>
+          <span class="position-absolute top-0 end-0 p-2 z-index-20 text-muted"><i class="ri-heart-line"></i></span>
+          
+          <picture class="position-relative overflow-hidden d-block bg-light w-100 h-100">
+            {% if p.main_image %}
+              <img class="w-100 h-100 img-fluid position-relative z-index-10" 
+                   src="{{ p.main_image.image.url }}" 
+                   alt="{{ p.name }}"
+                   style="object-fit: cover;" />
+            {% endif %}
+          </picture>
+          
+          <div class="position-absolute start-0 bottom-0 end-0 z-index-20 p-2">
+            <button class="btn btn-quick-add"><i class="ri-add-line me-2"></i> Quick Add</button>
+          </div>
+        </div>
+
+        <div class="card-body px-0">
+          <a class="text-decoration-none link-cover" href="{% url 'product_details' %}?productid={{ p.product_id }}">{{ p.name }}</a>
+          <small class="text-muted d-block">Brand: {{ p.brand }}</small>
+          <p class="mt-2 mb-0 small">
+            {% if p.fake_price > p.price %}
+              <s class="text-muted">₹{{ p.fake_price }}</s>
+              <span class="text-danger">₹{{ p.price }}</span>
+            {% else %}
+              ₹{{ p.price }}
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+    </div>
+
+
+                    
+                      <!-- Add Arrows -->
+                      <div
+                        class="swiper-prev top-50  start-0 z-index-30 cursor-pointer transition-all bg-white px-3 py-4 position-absolute z-index-30 top-50 start-0 mt-n8 d-flex justify-content-center align-items-center opacity-50-hover">
+                        <i class="ri-arrow-left-s-line ri-lg"></i></div>
+                      <div
+                        class="swiper-next top-50 end-0 z-index-30 cursor-pointer transition-all bg-white px-3 py-4 position-absolute z-index-30 top-50 end-0 mt-n8 d-flex justify-content-center align-items-center opacity-50-hover">
+                        <i class="ri-arrow-right-s-line ri-lg"></i></div>
+                    
+                    
+                    </div>
+                    <!-- / Swiper Latest-->                </div>
+                <!-- / Related Products-->
+
+                <!-- Reviews-->
+                <div class="col-12" data-aos="fade-up">
+                    <h3 class="fs-4 fw-bolder mt-7 mb-4 reviews">Reviews</h3>
+                    
+                    <!-- Review Summary-->
+                    <div class="bg-light p-5 justify-content-between d-flex flex-column flex-lg-row">
+                        <div class="d-flex flex-column align-items-center mb-4 mb-lg-0">
+                            <div class="bg-dark text-white f-w-24 f-h-24 d-flex rounded-circle align-items-center justify-content-center fs-2 fw-bold mb-3">
+                                {{ avg_rating }}
+                            </div>
+                            <!-- Review Stars Medium-->
+                            <div class="rating position-relative d-table">
+                                    <div class="position-absolute stars">
+                                        {% for _ in rating_counts.ars %}
+                                            <i class="ri-star-fill text-dark ri-2x mr-1"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="stars">
+                                        {% for _ in "12345" %}
+                                            <i class="ri-star-fill ri-2x mr-1 text-muted opacity-25"></i>
+                                        {% endfor %}
+                                    </div>
+</div>    </div>
+                        <div class="d-flex flex-grow-1 flex-column ms-lg-8">
+                            <div class="d-flex align-items-center justify-content-start mb-2">
+                                <div class="f-w-20">
+                                    <!-- Review Stars Small-->
+                                    <div class="rating position-relative d-table">
+                                        <div class="position-absolute stars" style="width: 100%">
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                        </div>
+                                        <div class="stars">
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                        </div>
+                                    </div>            </div>
+                                <div class="progress d-flex flex-grow-1 mx-4 f-h-1">
+                                    <div class="progress-bar bg-dark" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="fw-bold small d-block f-w-4 text-end">{{ rating_counts.5 }}</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-start mb-2">
+                                <div class="f-w-20">
+                                    <!-- Review Stars Small-->
+                                    <div class="rating position-relative d-table">
+                                        <div class="position-absolute stars" style="width: 80%">
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                        </div>
+                                        <div class="stars">
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                        </div>
+                                    </div>            </div>
+                                <div class="progress d-flex flex-grow-1 mx-4 f-h-1">
+                                    <div class="progress-bar bg-dark" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="fw-bold small d-block f-w-4 text-end">{{ rating_counts.4 }}</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-start mb-2">
+                                <div class="f-w-20">
+                                    <!-- Review Stars Small-->
+                                    <div class="rating position-relative d-table">
+                                        <div class="position-absolute stars" style="width: 60%">
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                        </div>
+                                        <div class="stars">
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                        </div>
+                                    </div>            </div>
+                                <div class="progress d-flex flex-grow-1 mx-4 f-h-1">
+                                    <div class="progress-bar bg-dark" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="fw-bold small d-block f-w-4 text-end">{{ rating_counts.3 }}</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-start mb-2">
+                                <div class="f-w-20">
+                                    <!-- Review Stars Small-->
+                                    <div class="rating position-relative d-table">
+                                        <div class="position-absolute stars" style="width: 40%">
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                        </div>
+                                        <div class="stars">
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                        </div>
+                                    </div>            </div>
+                                <div class="progress d-flex flex-grow-1 mx-4 f-h-1">
+                                    <div class="progress-bar bg-dark" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="fw-bold small d-block f-w-4 text-end">{{ rating_counts.2 }}</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-start mb-2">
+                                <div class="f-w-20">
+                                    <!-- Review Stars Small-->
+                                    <div class="rating position-relative d-table">
+                                        <div class="position-absolute stars" style="width: 20%">
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                            <i class="ri-star-fill text-dark mr-1"></i>
+                                        </div>
+                                        <div class="stars">
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                            <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                                        </div>
+                                    </div>            </div>
+                                <div class="progress d-flex flex-grow-1 mx-4 f-h-1">
+                                    <div class="progress-bar bg-dark" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="fw-bold small d-block f-w-4 text-end">{{ rating_counts.1 }}</span>
+                            </div>
+                            <p class="mt-3 mb-0 d-flex align-items-start"><i class="ri-chat-voice-line me-2"></i> {{total_reviews}} customers have reviewed this product</p>
+                        </div>
+                    </div><!-- / Rewview Summary-->
+                    
+                    <!-- Reviews-->
+                    <div class="row g-6 g-md-8 g-lg-10 my-3">
+    {% for feedback in feedback_list %}
+    <div class="col-12 col-lg-6 col-xxl-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <!-- Review Stars -->
+            <div class="rating position-relative d-table">
+                <div class="rating position-relative d-table">
+    <div class="position-absolute stars">
+                    {% for _ in feedback.star_list %}
+                        <i class="ri-star-fill text-dark mr-1"></i>
+                    {% endfor %}
+                </div>
+                <div class="stars">
+                    {% for _ in '12345'%}
+                        <i class="ri-star-fill mr-1 text-muted opacity-25"></i>
+                    {% endfor %}
+                </div>
+</div>
+
+            </div>
+            <div class="text-muted small">{{ feedback.created_at|date:"jS F Y" }} by {{ feedback.custid.first }}</div>
+        </div>
+        <p class="fw-bold mb-2">{{ feedback.product.name|default:"General Feedback" }}</p>
+        <p class="fs-7">{{ feedback.message }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+                    <!-- / Reviews-->
+                    
+                    <!-- Review Pagination-->
+                    <div class="d-flex flex-column f-w-44 mx-auto my-5 text-center">
+                        <small class="text-muted">Showing {{total_reviews}} reviews</small>
+                        <div class="progress f-h-1 mt-3">
+                            <div class="progress-bar bg-dark" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <a href="#" class="btn btn-outline-dark btn-sm mt-5 align-self-center py-3 px-4 border-2">Load More</a>
+                    </div><!-- / Review Pagination-->                </div>
+                <!-- / Reviews-->
+            </div>
+
+        </div>
+
+        <!-- /Page Content -->
+    </section>
+    <!-- / Main Section-->
+
+    <!-- Footer -->
+    <!-- / Footer-->  
+
+    <!-- Theme JS -->
+    <!-- Vendor JS -->
+    <script src="../static/assets/js/vendor.bundle.js"></script>
+    
+    <!-- Theme JS -->
+    <script src="../static/assets/js/theme.bundle.js"></script>
+</body>
+
+</html>

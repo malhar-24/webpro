@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Light background for a clean feel */
+            color: #343a40; /* Standard dark text */
+            padding-top: 20px; /* Space from top */
+            padding-bottom: 20px; /* Space from bottom */
+        }
+        .container {
+            max-width: 960px; /* Max width for content */
+        }
+        .header-section {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+        }
+        .header-main-color {
+            color: #212529; /* Very dark gray/charcoal for header */
+        }
+        .back-link {
+            font-weight: 500;
+            color: #6c757d; /* Muted gray for back link */
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+            display: flex; /* Align icon and text */
+            align-items: center;
+        }
+        .back-link:hover {
+            color: #495057; /* Darker gray on hover */
+            text-decoration: underline;
+        }
+        .order-card {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 0.75rem;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease-in-out, opacity 0.3s ease-in-out; /* Added opacity for filter effect */
+            cursor: pointer; /* Indicate it's clickable */
+        }
+        .order-card:hover {
+            transform: translateY(-3px); /* Slight lift on hover */
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+        /* Styles for 'Delivered' status */
+        .order-card[data-status="Delivered"] {
+            background-color: #f0f2f5; /* Light gray background for delivered */
+            border-color: #d1d9e0;
+            color: #6c757d; /* Muted text color */
+        }
+        .order-card[data-status="Delivered"] .badge-status {
+            background-color: #28a745 !important; /* Green badge */
+        }
+        /* Styles for 'Confirmed' status */
+        .order-card[data-status="Confirmed"] .badge-status {
+            background-color: #0dcaf0 !important; /* Info blue/cyan for confirmed */
+            color: #212529 !important; /* Dark text for contrast */
+        }
+
+        /* Styles for other statuses (default black/dark) */
+        .order-card[data-status="Pending"] .badge-status {
+            background-color: #ffc107 !important; /* Warning yellow */
+            color: #212529 !important; /* Dark text for contrast */
+        }
+        .order-card[data-status="Shipped"] .badge-status {
+            background-color: #0d6efd !important; /* Primary blue */
+        }
+
+        /* Common styles for order info */
+        .order-info strong {
+            color: #495057; /* Dark gray for strong text */
+            font-size: 1.1em;
+        }
+        .form-select {
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border: 1px solid #ced4da;
+            width: auto; /* Allow natural width */
+            display: inline-block; /* Keep it inline with button */
+            vertical-align: middle; /* Align with button */
+        }
+        .form-select:focus {
+            border-color: #b0d8b0; /* Muted green border on focus */
+            box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25); /* Muted green shadow on focus */
+        }
+        .btn-update {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease-in-out;
+            background-color: #28a745; /* Bootstrap success green */
+            border-color: #28a745;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+        .btn-update:hover {
+            background-color: #218838; /* Darker green on hover */
+            border-color: #1e7e34;
+            transform: translateY(-1px);
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+        }
+        .order-items-list {
+            list-style: none; /* Remove default bullets */
+            padding-left: 0;
+            margin-top: 10px;
+            border-top: 1px dashed #e9ecef; /* Separator for items */
+            padding-top: 10px;
+        }
+        .order-items-list li {
+            background-color: #f8f9fa; /* Light background for list items */
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            border-radius: 0.375rem;
+            border: 1px solid #dee2e6;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        .empty-orders-message {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 0.75rem;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+        /* Flexbox for forms to align select and button */
+        form {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between select and button */
+            flex-wrap: wrap; /* Allow elements to wrap on small screens */
+        }
+        .filter-buttons {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center; /* Center the filter buttons */
+            flex-wrap: wrap;
+            gap: 10px; /* Space between filter buttons */
+        }
+        .filter-buttons .btn {
+            min-width: 120px; /* Give buttons a consistent width */
+        }
+        /* Modal specific styles */
+        .modal-body strong {
+            color: #495057;
+        }
+        .modal-item-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .modal-item-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #e9ecef;
+        }
+        .modal-item-list li:last-child {
+            border-bottom: none;
+        }
+        /* Mobile adjustments */
+        @media (max-width: 576px) {
+            .header-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-section h1 {
+                margin-bottom: 1rem;
+            }
+            .back-link {
+                margin-top: 1rem;
+            }
+            form {
+                flex-direction: column;
+                align-items: flex-start; /* Align form elements to the start */
+            }
+            .form-select, .btn-update {
+                width: 100%; /* Make select and button full width on mobile */
+            }
+            .form-select {
+                margin-bottom: 10px; /* Space between select and button when stacked */
+            }
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .filter-buttons .btn {
+                width: 100%; /* Full width for filter buttons on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="header-section">
+            <a href="/adminpanel/dashboard/" class="back-link">
+                <i class="ri-arrow-left-line me-2"></i>
+                Back to Dashboard
+            </a>
+            <h1 class="mb-0 display-5 fw-bold header-main-color">Manage Orders</h1>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="btn btn-outline-dark active" data-filter="all">All Orders</button>
+            <button class="btn btn-outline-warning" data-filter="Pending">Pending</button>
+            <button class="btn btn-outline-info" data-filter="Confirmed">Confirmed</button>
+            <button class="btn btn-outline-primary" data-filter="Shipped">Shipped</button>
+            <button class="btn btn-outline-success" data-filter="Delivered">Delivered</button>
+        </div>
+
+        <div id="order-list-container">
+            {% for order in orders %}
+                <div class="order-card" data-status="{{ order.status }}" data-bs-toggle="modal" data-bs-target="#orderDetailsModal" data-order-id="{{ order.orderid }}">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                        <div class="order-info">
+                            <strong>Order #{{ order.orderid }}</strong><br>
+                            Customer: {{ order.custid.name }}<br>
+                            Total: ₹{{ order.total|floatformat:2 }}
+                        </div>
+                        <div class="order-status-display mt-2 mt-md-0">
+                            <span class="badge rounded-pill bg-info text-dark badge-status">{{ order.status|capfirst }}</span>
+                            <span class="badge rounded-pill bg-secondary text-white ms-2">{{ order.payment_status|default:"N/A"|capfirst }}</span>
+                        </div>
+                    </div>
+
+                    <p class="mb-2"><strong>Items:</strong></p>
+                    <ul class="order-items-list">
+                        {% for item in order.items.all %}
+                            <li>{{ item.product.name }} - Qty: {{ item.quantity }} @ ₹{{ item.price|floatformat:2 }}</li>
+                        {% empty %}
+                            <li>No items found for this order.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% empty %}
+                <p class="empty-orders-message">No orders found.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel">Order Details: <span id="modalOrderId"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Customer Name:</strong> <span id="modalCustomerName"></span></p>
+                    <p><strong>Customer Email:</strong> <span id="modalCustomeremail"></span></p>             
+                    <p><strong>Customer Contact:</strong> <span id="modalCustomerContact"></span></p>
+                    <p><strong>Delivery Address:</strong> <span id="modalDeliveryAddress"></span></p>
+                    <p><strong>Order Date:</strong> <span id="modalOrderDate"></span></p>
+                    <p><strong>Current Status:</strong> <span id="modalOrderStatus"></span></p>
+                    <p><strong>Payment Status:</strong> <span id="modalPaymentStatus"></span></p>
+                    <p><strong>Total Amount:</strong> ₹<span id="modalTotalAmount"></span></p>
+
+                    <h6 class="mt-4">Order Items:</h6>
+                    <ul id="modalOrderItems" class="modal-item-list">
+                        </ul>
+
+                    <hr class="my-4">
+                    <h6>Update Order:</h6>
+                    <form id="modalUpdateStatusForm" method="POST" action="" class="mb-3">
+                        {% csrf_token %}
+                        <label for="modalStatus" class="form-label mb-0">Order Status:</label>
+                        <select id="modalStatus" name="status" class="form-select">
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                        <button type="submit" class="btn btn-update">Update Status</button>
+                    </form>
+
+                    <form id="modalUpdatePaymentStatusForm" method="POST" action="" class="mb-3">
+                        {% csrf_token %}
+                        <label for="modalPaymentStatusSelect" class="form-label mb-0">Payment Status:</label>
+                        <select id="modalPaymentStatusSelect" name="payment_status" class="form-select">
+                            <option value="verified">Verified</option>
+                            <option value="unverified">Unverified</option>
+                        </select>
+                        <button type="submit" class="btn btn-update">Update Payment</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-buttons .btn');
+            const orderCards = document.querySelectorAll('.order-card');
+            const orderListContainer = document.getElementById('order-list-container');
+            const orderDetailsModal = document.getElementById('orderDetailsModal');
+
+            // Store all orders data in a JavaScript object for quick lookup
+            // This assumes 'orders' is available from your Django context.
+            // You might need to serialize this data in your Django view.
+// This line in your JavaScript will correctly parse the JSON string:
+const allOrdersData = JSON.parse('{{ orders_json|escapejs }}');        
+            // is a common but problematic way to pass complex Django querysets to JS.
+            // A better way is shown in the "Important Update for views.py" section below.
+            // For now, assume `allOrdersData` is correctly populated.
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filterStatus = this.dataset.filter;
+
+                    const filteredCards = Array.from(orderCards).filter(card => {
+                        const cardStatus = card.dataset.status;
+                        return filterStatus === 'all' || cardStatus === filterStatus;
+                    });
+
+                    filteredCards.sort((a, b) => {
+                        const idA = parseInt(a.querySelector('.order-info strong').textContent.replace('Order #', ''));
+                        const idB = parseInt(b.querySelector('.order-info strong').textContent.replace('Order #', ''));
+                        return idB - idA;
+                    });
+
+                    orderListContainer.innerHTML = '';
+                    if (filteredCards.length > 0) {
+                        filteredCards.forEach(card => {
+                            orderListContainer.appendChild(card);
+                        });
+                    } else {
+                        orderListContainer.innerHTML = '<p class="empty-orders-message">No orders found for this filter.</p>';
+                    }
+                });
+            });
+
+            // Handle modal display and content population
+            orderDetailsModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget; // Button that triggered the modal (which is the .order-card itself)
+                const orderId = button.dataset.orderId; // Extract info from data-order-id attribute
+
+                // Find the order data from the allOrdersData object
+                const order = allOrdersData.find(o => o.orderid === parseInt(orderId));
+
+                if (order) {
+                    document.getElementById('modalOrderId').textContent = order.orderid;
+                    document.getElementById('modalCustomerName').textContent = order.customer.name;
+                    document.getElementById('modalCustomeremail').textContent = order.customer.email;
+                    document.getElementById('modalCustomerContact').textContent = order.customer.phone || 'N/A'; // Assuming a 'phone' field
+                    document.getElementById('modalDeliveryAddress').textContent = order.customer.address || 'N/A'; // Assuming an 'address' field
+                    document.getElementById('modalOrderDate').textContent = new Date(order.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    document.getElementById('modalOrderStatus').textContent = order.status;
+                    document.getElementById('modalPaymentStatus').textContent = order.payment_status;
+                    document.getElementById('modalTotalAmount').textContent = parseFloat(order.total).toFixed(2);
+
+                    const modalOrderItemsList = document.getElementById('modalOrderItems');
+                    modalOrderItemsList.innerHTML = ''; // Clear previous items
+                    if (order.items && order.items.length > 0) {
+                        order.items.forEach(item => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = `${item.product_name} - Qty: ${item.quantity} @ ₹${parseFloat(item.price).toFixed(2)}`;
+                            modalOrderItemsList.appendChild(listItem);
+                        });
+                    } else {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = 'No items found for this order.';
+                        modalOrderItemsList.appendChild(listItem);
+                    }
+
+                    // Set values for update forms inside the modal
+                    document.getElementById('modalStatus').value = order.status;
+                    document.getElementById('modalPaymentStatusSelect').value = order.payment_status;
+
+                    // Update form actions for the modal's update buttons
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    document.getElementById('modalUpdateStatusForm').setAttribute('action', `/update_order_status/${order.orderid}/`);
+                    document.getElementById('modalUpdateStatusForm').querySelector('[name=csrfmiddlewaretoken]').value = csrfToken; // Ensure CSRF token is correct
+
+                    document.getElementById('modalUpdatePaymentStatusForm').setAttribute('action', `/update_order_payment_status/${order.orderid}/`);
+                    document.getElementById('modalUpdatePaymentStatusForm').querySelector('[name=csrfmiddlewaretoken]').value = csrfToken; // Ensure CSRF token is correct
+
+
+                }
+            });
+
+
+            // Initial filtering on page load to ensure 'all' is active and sorted
+            document.querySelector('.filter-buttons .btn.active').click();
+        });
+    </script>
+</body>
+</html>

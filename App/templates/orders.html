@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+
+<!-- Head -->
+<head>
+  <!-- Page Meta Tags-->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="keywords" content="">
+
+  <!-- Custom Google Fonts-->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Roboto:wght@300;400;700&display=auto"
+    rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="../static/assets/images/logos/weblogo.jpeg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../static/assets/images/logos/weblogo.jpeg">
+  <link rel="icon" type="image/png" sizes="16x16" href="../static/assets/images/logos/weblogo.jpeg">
+  <link rel="mask-icon" href="../static/assets/images//logos/weblogo.jpeg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Vendor CSS -->
+  <link rel="stylesheet" href="../static/assets/css/libs.bundle.css" />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="../static/assets/css/theme.bundle.css" />
+
+  <!-- Fix for custom scrollbar if JS is disabled-->
+  <noscript>
+    <style>
+      /**
+          * Reinstate scrolling for non-JS clients
+          */
+      .simplebar-content-wrapper {
+        overflow: auto;
+      }
+    </style>
+  </noscript>
+
+<style>#loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff; /* or any background */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loader {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ccc;
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
+  <!-- Page Title -->
+  <title>OldSkool | Bootstrap 5 HTML Template</title>
+
+</head>
+<body class="">
+<div id="loader-wrapper">
+  <div id="loader"></div>
+</div>
+<script>
+    window.addEventListener('load', function () {
+  const loader = document.getElementById('loader-wrapper');
+  loader.style.transition = 'opacity 0.5s ease';
+  loader.style.opacity = '0';
+  setTimeout(() => loader.style.display = 'none', 500);
+});
+
+</script>
+
+    <!-- Navbar -->
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white flex-column border-0 ">
+    <div class="container-fluid">
+        <div class="w-100">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                <a class="navbar-brand fw-bold fs-3 m-0 p-0 flex-shrink-0 order-0" href="{% url 'home' %}">
+                    <div class="d-flex align-items-center">
+                        <img class="f-w-15" src="../static/assets/images/logos/weblogo.jpeg" alt="Logo" style="width: 60px;">
+                    </div>
+                </a>
+                <ul class="list-unstyled mb-0 d-flex align-items-center order-1 order-lg-2 nav-sidelinks">
+
+                    <li class="d-lg-none">
+                        <span class="nav-link text-body d-flex align-items-center cursor-pointer" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <i class="ri-menu-line ri-lg me-1"></i> Menu
+                        </span>
+                    </li>
+                    <li class="d-lg-none ms-2">
+                           <span class="nav-link text-body search-trigger cursor-pointer"><i class="ri-search-line ri-lg"></i></span>
+                    </li>
+                    <li class="d-none d-sm-block">
+                        <span class="nav-link text-body search-trigger cursor-pointer">Search</span>
+
+                        <div class="navbar-search d-none">
+                            <div class="input-group mb-3 h-100">
+                                <span class="input-group-text px-4 bg-transparent border-0"><i
+                                            class="ri-search-line ri-lg"></i></span>
+                                <input type="text" class="form-control text-body bg-transparent border-0"
+                                    placeholder="Enter your search terms...">
+                                <span
+                                    class="input-group-text px-4 cursor-pointer disable-child-pointer close-search bg-transparent border-0"><i
+                                            class="ri-close-circle-line ri-lg"></i></span>
+                            </div>
+                        </div>
+                        <div class="search-overlay"></div>
+                    </li>                    <li class="ms-1 d-none d-lg-inline-block"> {# This makes it visible only on PC view #}
+                        {% if request.session.customer_id %}
+                            <a class="nav-link text-body" href="{% url 'logout_view' %}">
+                                Logout
+                            </a>
+                        {% else %}
+                            <a class="nav-link text-body" href="{% url 'login_register' %}">
+                                Login
+                            </a>
+                        {% endif %}
+                    </li>
+
+                    <li class="ms-1 d-inline-block position-relative dropdown-cart">
+                        <button class="nav-link me-0 disable-child-pointer border-0 p-0 bg-transparent text-body"
+                            type="button">
+                            Bag ({{total_items}})
+                        </button>
+                        <div class="cart-dropdown dropdown-menu">
+
+                            <div class="d-flex justify-content-between align-items-center border-bottom pt-3 pb-4">
+                                <h6 class="fw-bolder m-0">Cart Summary ({{total_items}} items)</h6>
+                                <i class="ri-close-circle-line text-muted ri-lg cursor-pointer btn-close-cart"></i>
+                            </div>
+                            <div>
+                                {% for item in cart_items %}
+                                <div class="row mx-0 py-4 g-0 border-bottom">
+                                    <div class="col-2 position-relative">
+                                        <a href="{% url 'product_details' %}?productid={{ item.product.product_id }}">
+                                            <picture class="d-block">
+                                                <img class="img-fluid" src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}">
+                                            </picture>
+                                        </a>
+                                    </div>
+                                    <div class="col-9 offset-1">
+                                        <div>
+                                            <h6 class="justify-content-between d-flex align-items-start mb-2">
+                                                {{ item.product.name }}
+                                                <form method="POST" action="{% url 'remove_from_cart' %}" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="product_id" value="{{ item.product.product_id }}">
+                                                    <button type="submit" style="border: none; background: none;">
+                                                        <i class="ri-close-line ms-3 text-danger"></i>
+                                                    </button>
+                                                </form>
+                                            </h6>
+                                            <span class="d-block text-muted fw-bolder text-uppercase fs-9">Qty: {{ item.quantity }}</span>
+                                        </div>
+                                        <p class="fw-bolder text-end text-muted m-0">₹{{ item.product.price|floatformat:2 }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div>
+                                <div class="pt-3">
+                                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-start mb-4 mb-md-2">
+                                        <div>
+                                            <p class="m-0 fw-bold fs-5">Grand Total</p>
+                                            <span class="text-muted small"></span>
+                                        </div>
+                                        <p class="m-0 fs-5 fw-bold">₹{{total_price}}</p>
+                                    </div>
+                                </div>
+                                <a href="{% url 'cart' %}" class="btn btn-outline-dark w-100 text-center mt-4" role="button">View Cart</a>
+                                <a href="{% url 'cart' %}" class="btn btn-dark w-100 text-center mt-2" role="button">Proceed To Checkout</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="flex-shrink-0 collapse navbar-collapse navbar-collapse-light w-auto flex-grow-1 order-2 order-lg-1"
+                    id="navbarNavDropdown">
+
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'home' %}" role="button">
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'product' %}" role="button">
+                                Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'order' %}" role="button">
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'cart' %}" role="button">
+                                Cart
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact' %}" role="button">
+                                Contact
+                            </a>
+                        </li>
+                        <li class="nav-item d-lg-none"> {# This ensures it only appears in the collapsed menu for mobile #}
+                            {% if request.session.customer_id %}
+                                <a class="nav-link" href="{% url 'logout_view' %}">
+                                    Logout
+                                </a>
+                            {% else %}
+                                <a class="nav-link" href="{% url 'login_register' %}">
+                                    Login
+                                </a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <!-- / Navbar-->    <!-- / Navbar-->
+
+<section>
+
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <h1 class="mb-4 text-center">Order #{{ order.orderid }} Details</h1>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col-6 col-md-4"><strong>Order ID:</strong></div>
+                        <div class="col-6 col-md-8">#{{ order.orderid }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6 col-md-4"><strong>Order Date:</strong></div>
+                        <div class="col-6 col-md-8">{{ order.created_at|date:"M d, Y" }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6 col-md-4"><strong>Total Amount:</strong></div>
+                        <div class="col-6 col-md-8">₹{{ order.total|floatformat:2 }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6 col-md-4"><strong>Payment Status:</strong></div>
+                        <div class="col-6 col-md-8">
+                            <span class="badge {% if order.payment_status == 'done' %}bg-success{% elif order.payment_status == 'cod' %}bg-info{% else %}bg-secondary{% endif %}">
+                                {{ order.payment_status|default:"N/A"|capfirst }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 col-md-4"><strong>Order Status:</strong></div>
+                        <div class="col-6 col-md-8">
+                            <span class="badge {% if order.status == 'Delivered' %}bg-success{% elif order.status == 'Shipped' %}bg-primary{% elif order.status == 'Pending' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                                {{ order.status|default:"N/A"|capfirst }}
+                            </span>
+                        </div>
+                    </div>
+                    {% if order.created_at %}
+                    <hr>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            {% comment %}
+                                We add 3 days here. If you prefer to calculate this in the view,
+                                pass 'estimated_delivery_date' from the view instead.
+                                For the purpose of this example, I'm using the custom filter `add_days`.
+                                Make sure `{% load date_extras %}` is at the top.
+                            {% endcomment %}
+                            <p class="mb-0 text-muted small">
+                                Estimated Delivery By: <strong class="text-dark">{{ delivery_date|date:"M d, Y" }}</strong>
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Shipping Address</h5>
+                </div>
+                <div class="card-body">
+                    <address class="mb-0">
+                        {{ order.daddress }}<br>
+                        {{ order.dcity }}, {{ order.dstate }} - {{ order.dzipcode }}<br>
+                        {# You might want to add customer name or phone here if available in order object #}
+                        {# e.g., {{ order.custid.first_name }} {{ order.custid.last_name }} <br> #}
+                        {# Phone: {{ order.custid.phone_number }} #}
+                    </address>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Items in Your Order</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for item in order.items.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <div class="d-flex align-items-center">
+                                {% comment %} Assuming product has an image related field `images.first.image.url` {% endcomment %}
+                                {% if item.product.images.first.image.url %}
+                                <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail me-3" style="width: 70px; height: 70px; object-fit: cover;">
+                                {% else %}
+                                <img src="" alt="Placeholder" class="img-thumbnail me-3" style="width: 70px; height: 70px; object-fit: cover;">
+                                {% endif %}
+                                <div>
+                                    <h6 class="mb-1">{{ item.product.name }}</h6>
+                                    <small class="text-muted">Quantity: {{ item.quantity }}</small>
+                                </div>
+                            </div>
+                            <span class="fw-bold">₹{{ item.price|floatformat:2 }}</span><
+                            
+                        </li>
+                        {% if order.status == 'Delivered' %}
+            <a href="/feedback/?custid={{ order.custid.custid }}&orderid={{ order.orderid }}&productid={{ item.product.prodid }}" class="btn btn-sm btn-outline-success mt-2">Give Feedback</a>
+            {% endif %}<br>
+                        {% empty %}
+                        <li class="list-group-item text-center text-muted py-3">No items found for this order.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer text-end">
+                    <h5 class="mb-0">Order Total: <span class="fw-bold">₹{{ order.total|floatformat:2 }}</span></h5>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'order' %}" class="btn btn-outline-primary">Back to All Orders</a>
+                <a href="{% url 'home' %}" class="btn btn-primary">Shop More</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+</section>
+    <!-- Footer -->
+    <footer class="border-top py-5 mt-4">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center flex-column flex-lg-row">
+
+            <div>
+                <ul class="list-unstyled mb-0">
+                    <li class="d-inline-block me-1"><a class="text-decoration-none text-dark-hover transition-all"
+                            href="#"><i class="ri-instagram-fill"></i></a></li>
+                    <li class="d-inline-block me-1"><a class="text-decoration-none text-dark-hover transition-all"
+                            href="#"><i class="ri-facebook-fill"></i></a></li>
+                    <li class="d-inline-block me-1"><a class="text-decoration-none text-dark-hover transition-all"
+                            href="#"><i class="ri-twitter-fill"></i></a></li>
+                    <li class="d-inline-block me-1"><a class="text-decoration-none text-dark-hover transition-all"
+                            href="#"><i class="ri-snapchat-fill"></i></a></li>
+                </ul>
+            </div>
+
+            <div class="text-center text-lg-end mt-4 mt-lg-0">
+                <h6 class="fw-bold mb-2">Customer Care</h6>
+                <ul class="list-unstyled mb-0 small">
+                    <li class="mb-1"><a class="text-decoration-none text-body" href="mailto:taracelestial09@gmail.com"><i class="ri-mail-line me-1"></i> taracelestial09@gmail.com</a></li>
+                    <li><a class="text-decoration-none text-body" href="tel:+1234567890"><i class="ri-phone-line me-1"></i>-----</a></li>
+                    <li class="mt-2 text-muted">© {{ current_year }} Your Tara Celestial. All Rights Reserved.</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</footer><!-- / Footer-->
+
+
+    <!-- Theme JS -->
+    <!-- Vendor JS -->
+    <script src="../static/assets/js/vendor.bundle.js"></script>
+    
+    <!-- Theme JS -->
+    <script src="../static/assets/js/theme.bundle.js"></script>
+</body>
+
+</html>

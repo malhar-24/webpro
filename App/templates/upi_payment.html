@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPI Payment</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f2f4f8;
+    }
+    .card {
+      border: none;
+    }
+    .upi-icons img {
+      height: 32px;
+      margin: 0 8px;
+    }
+    .upi-btn {
+      background-color: #0d6efd;
+      color: white;
+    }
+    .upi-btn:hover {
+      background-color: #0b5ed7;
+    }
+  </style>
+</head>
+<body>
+<div class="container py-5">
+  <div class="card shadow p-4 rounded-4">
+    <h3 class="mb-4 text-center">Complete Your Payment</h3>
+
+    <!-- UPI App Icons -->
+    <div class="upi-icons text-center mb-4">
+      <img src="https://img.icons8.com/?size=100&id=112309&format=png&color=000000" alt="UPI">
+      <img src="https://img.icons8.com/?size=100&id=BsiNqIHwKUq8&format=png&color=000000" alt="Google Pay">
+      <img src="https://img.icons8.com/?size=100&id=5RcHTSNy4fbL&format=png&color=000000" alt="BHIM">
+      <img src="https://img.icons8.com/?size=100&id=bsW8pfFqISOJ&format=png&color=000000" alt="Paytm">
+      <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000" alt="PhonePe">
+    </div>
+
+    <p><strong>Order ID:</strong> {{ order_id }}</p>
+    <p><strong>Amount:</strong> ₹{{ amount }}</p>
+
+    <!-- Pay Now Button -->
+    <div class="d-grid gap-2 mb-3">
+      <a href="{{ upi_link }}" class="btn upi-btn btn-lg" onclick="showDone()">
+        Pay Now using any UPI App
+      </a>
+    </div>
+
+    <!-- Show QR Button -->
+    <div class="d-grid gap-2 mb-3">
+      <button class="btn btn-outline-primary btn-lg" onclick="toggleQR()">Show QR Code</button>
+    </div>
+
+    <!-- QR Image with Instructions -->
+    <div id="qr-section" class="text-center mt-3 d-none">
+      <img src="{{ qr_url }}" alt="QR Code" class="img-fluid rounded mb-3" style="max-width: 250px;"><br>
+      <div class="upi-icons mb-2">
+        <img src="https://img.icons8.com/?size=100&id=112309&format=png&color=000000" alt="UPI">
+        <img src="https://img.icons8.com/?size=100&id=BsiNqIHwKUq8&format=png&color=000000" alt="Google Pay">
+        <img src="https://img.icons8.com/?size=100&id=5RcHTSNy4fbL&format=png&color=000000" alt="BHIM">
+        <img src="https://img.icons8.com/?size=100&id=bsW8pfFqISOJ&format=png&color=000000" alt="Paytm">
+        <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000" alt="PhonePe">
+      </div>
+      <p class="text-muted">Scan this QR code using any UPI app to pay.<br>After payment, click <strong>Done</strong> to continue.</p>
+    </div>
+
+    <!-- Done Button -->
+    <div id="done-section" class="d-grid gap-2 mt-4 d-none">
+      <a href="/orders/?orderid={{ order_id }}" class="btn btn-dark btn-lg">Done</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showDone() {
+    document.getElementById('done-section').classList.remove('d-none');
+  }
+
+  function toggleQR() {
+    document.getElementById('qr-section').classList.remove('d-none');
+    showDone();
+  }
+</script>
+
+</body>
+</html>
