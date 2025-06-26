@@ -7,13 +7,12 @@ from random import sample
 import uuid
 import os
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.http import HttpResponse
 from django.core.mail import send_mail
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import random
 from django.contrib.auth.hashers import make_password
+from django.views.decorators.csrf import csrf_protect
 
 from django.contrib.auth.hashers import check_password
 
@@ -672,15 +671,18 @@ def product_details(request):
 #owner
 
 
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+@ensure_csrf_cookie
 def admin_login_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-
+    
         try:
             owner = Owner.objects.get(username=username)
             if check_password(password, owner.password):
-                request.session['owner_id'] = owner.id
+                request.session['owner_id'] = owner.username
                 return redirect('admin_dashboard')
             else:
                 messages.error(request, "Invalid username or password")
@@ -688,6 +690,7 @@ def admin_login_page(request):
             messages.error(request, "Invalid username or password")
 
     return render(request, 'owner/admin_login.html')
+
 
 def admin_dashboard(request):
     if not request.session.get('owner_id'):
