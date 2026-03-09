@@ -49,9 +49,8 @@ Login using the superuser credentials created earlier.
 
 ## 📸 Screenshots
 
-Add screenshots of your website homepage here.
+screenshots of website homepage here.
 
-Example:
 
 ![Home Page](App/static/assets/Screenshot_2025-06-26-15-25-21-285_com.android.chrome.jpg)
 ![Product Page](App/static/assets/Screenshot_2025-06-26-15-25-28-999_com.android.chrome.jpg)
