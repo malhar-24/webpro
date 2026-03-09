@@ -124,14 +124,15 @@ Login using the superuser credentials created earlier.
 
 ## 📸 Screenshots
 
-Add screenshots of your website here.
+Add screenshots of your website homepage here.
 
 Example:
 
 ![Home Page](App/static/assets/Screenshot_2025-06-26-15-25-21-285_com.android.chrome.jpg)
-![Product Page](screenshots/product.png)
-![Cart Page](screenshots/cart.png)
-
+![Product Page](App/static/assets/Screenshot_2025-06-26-15-25-28-999_com.android.chrome.jpg)
+![Cart Page](App/static/assets/Screenshot_2025-06-26-15-25-37-382_com.android.chrome.jpg)
+![Product Page](App/static/assets/Screenshot_2025-06-26-15-25-46-782_com.android.chrome.jpg)
+![Cart Page](App/static/assets/Screenshot_2025-06-26-15-25-55-693_com.android.chrome.jpg)
 
 
 ---
