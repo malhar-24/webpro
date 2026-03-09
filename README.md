@@ -129,7 +129,7 @@ Add screenshots of your website here.
 Example:
 
 ```
-![Home Page](screenshots/home.png)
+![Home Page](App/static/assets/Screenshot_2025-06-26-15-25-21-285_com.android.chrome.jpg)
 ![Product Page](screenshots/product.png)
 ![Cart Page](screenshots/cart.png)
 ```
